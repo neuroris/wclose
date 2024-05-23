@@ -20,15 +20,20 @@ class WookClose:
         # self.taskbar_dlg.print_control_identifiers()
 
         # Close applications
-        self.close_ADT()
-        self.close_hanaro()
+        # self.close_ADT()
+        # self.close_hanaro()
         # self.close_pointnix()
         # self.close_excel()
         # self.close_explorer()
         # self.close_chrome()
         # self.close_pycharm()
+        self.close_app('하나로')
 
-        print('Whole close-up process done successfully!\n')
+        if self.failed:
+            print('\nSome app failed to close.\n')
+            print(self.fail_message)
+        else:
+            print('\nWhole close-up process done successfully!')
 
     def report_failure(self, message, e=None):
         self.failed = True
@@ -66,6 +71,22 @@ class WookClose:
         self.report_failure(window_title)
 
         return None
+
+    def close_app(self, title, app_name=None):
+        try:
+            app_name = app_name if app_name else title
+            print(title + ' close up procedure')
+            taskbar_dlg = self.taskbar_dlg.window(title_re=title + '.*개의 실행 중인 창.*')
+            if not taskbar_dlg.exists():
+                print(title + ' is not running')
+                return
+
+            taskbar_dlg.right_click_input()
+            pywinauto.keyboard.send_keys('{UP}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+        except Exception as e:
+            self.report_failure(title, e)
 
     def close_hanaro(self):
         try:
