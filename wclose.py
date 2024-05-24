@@ -19,15 +19,29 @@ class WookClose:
         self.taskbar_dlg = taskbar_app.window(class_name='Shell_TrayWnd')
         # self.taskbar_dlg.print_control_identifiers()
 
-        # Close applications
-        # self.close_ADT()
-        # self.close_hanaro()
-        # self.close_pointnix()
-        # self.close_excel()
-        # self.close_explorer()
-        # self.close_chrome()
-        # self.close_pycharm()
-        self.close_app('하나로')
+        self.close_ADT()
+        self.close_hanaro()
+        self.close_excel()
+        self.close_pycharm()
+        self.close_xelis()
+
+        self.close_app('CDX-View')
+        self.close_app('파일 탐색기')
+        self.close_app('Google Chrome')
+        self.close_app('Microsoft Store')
+        self.close_app('제어판')
+        self.close_app('EPSON')
+        self.close_app('메모장')
+        self.close_app('Microsoft Edge')
+        self.close_app('Core Temp')
+        self.close_app('밀리의 서재')
+        self.close_app('Visual Studio Code')
+        self.close_app('LINE')
+        self.close_app('카카오톡')
+        self.close_app('터미널')
+        self.close_app('PuTTY')
+        self.close_app('TIDAL')
+        self.close_app('계산기')
 
         if self.failed:
             print('\nSome app failed to close.\n')
@@ -75,18 +89,38 @@ class WookClose:
     def close_app(self, title, app_name=None):
         try:
             app_name = app_name if app_name else title
-            print(title + ' close up procedure')
+            print(app_name + ' close up procedure')
             taskbar_dlg = self.taskbar_dlg.window(title_re=title + '.*개의 실행 중인 창.*')
             if not taskbar_dlg.exists():
-                print(title + ' is not running')
+                print(app_name + ' is not running')
                 return
 
             taskbar_dlg.right_click_input()
+            time.sleep(0.5)
             pywinauto.keyboard.send_keys('{UP}')
-            pywinauto.keyboard.send_keys('{ENTER}')
             pywinauto.keyboard.send_keys('{ENTER}')
         except Exception as e:
             self.report_failure(title, e)
+
+    def close_ADT(self):
+        try:
+            print('ADT close up procedure')
+            pyautogui.hotkey('ctrl', 'win', 'left')
+            pyautogui.hotkey('ctrl', 'win', 'left')
+            taskbar_ADT_dlg = self.taskbar_dlg.window(title_re='ADT.* 1개의.*')
+            if not taskbar_ADT_dlg.exists():
+                print('ADT is not running')
+                return
+
+            # adt_dlg = self.get_top_dlg('ADT')
+            # adt_close_button = adt_dlg['Button6']
+            # adt_close_button.click_input()
+            taskbar_ADT_dlg.right_click_input()
+            pywinauto.keyboard.send_keys('{UP}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+            pyautogui.hotkey('ctrl', 'win', 'right')
+        except Exception as e:
+            self.report_failure('ADT', e)
 
     def close_hanaro(self):
         try:
@@ -107,41 +141,6 @@ class WookClose:
             pywinauto.keyboard.send_keys('{ENTER}')
         except Exception as e:
             self.report_failure('Hanaro', e)
-
-    def close_pointnix(self):
-        try:
-            print('Pointnix close up procedure')
-            taskbar_pointnix_dlg = self.taskbar_dlg.window(title_re='^CDX-View .*개의 실행 중인 창')
-            if not taskbar_pointnix_dlg.exists():
-                print('Pointnix is not running')
-                return
-
-            taskbar_pointnix_dlg.right_click_input()
-            time.sleep(0.5)
-            pywinauto.keyboard.send_keys('{UP}')
-            pywinauto.keyboard.send_keys('{ENTER}')
-        except Exception as e:
-            self.report_failure('PointNix', e)
-
-    def close_ADT(self):
-        try:
-            print('ADT close up procedure')
-            pyautogui.hotkey('ctrl','win','left')
-            pyautogui.hotkey('ctrl','win','left')
-            taskbar_ADT_dlg = self.taskbar_dlg.window(title_re='ADT.* 1개의.*')
-            if not taskbar_ADT_dlg.exists():
-                print('ADT is not running')
-                return
-
-            # adt_dlg = self.get_top_dlg('ADT')
-            # adt_close_button = adt_dlg['Button6']
-            # adt_close_button.click_input()
-            taskbar_ADT_dlg.right_click_input()
-            pywinauto.keyboard.send_keys('{UP}')
-            pywinauto.keyboard.send_keys('{ENTER}')
-            pyautogui.hotkey('ctrl','win','right')
-        except Exception as e:
-            self.report_failure('ADT', e)
 
     def close_excel(self):
         try:
@@ -179,38 +178,6 @@ class WookClose:
             #     excel_dlg.close()
         except Exception as e:
             self.report_failure('Excel', e)
-
-    def close_explorer(self):
-        try:
-            print('Explorer close up procedure')
-            taskbar_explorer_dlg = self.taskbar_dlg.window(title_re='파일 탐색기 .* 실행 중인 창')
-            if not taskbar_explorer_dlg.exists():
-                print('No explorer is running')
-                return
-
-            # self.app.connect(class_name='CabinetWClass')
-            taskbar_explorer_dlg.right_click_input()
-            time.sleep(0.5)
-            pywinauto.keyboard.send_keys('{UP}')
-            pywinauto.keyboard.send_keys('{ENTER}')
-        except Exception as e:
-            self.report_failure('Explorer', e)
-
-    def close_chrome(self):
-        try:
-            print('Chrome close up procedure')
-            # taskbar_chrome_dlg = self.taskbar_dlg.window(title_re='Chrome .* 실행 중인 창')
-            taskbar_chrome_dlg = self.taskbar_dlg.window(title_re='Google Chrome .* 실행 중인 창')
-            if not taskbar_chrome_dlg.exists():
-                print('No Chrome browser is running')
-                return
-
-            taskbar_chrome_dlg.right_click_input()
-            time.sleep(0.5)
-            pywinauto.keyboard.send_keys('{UP}')
-            pywinauto.keyboard.send_keys('{ENTER}')
-        except Exception as e:
-            self.report_failure('Chrome', e)
 
     def close_pycharm_deprecated(self):
         try:
@@ -256,6 +223,71 @@ class WookClose:
                 pycharm_close_dlg.close()
         except Exception as e:
             self.report_failure('PyCharm', e)
+
+    def close_xelis(self):
+        try:
+            print('Xelis close up procedure')
+            taskbar_xelis_dlg = self.taskbar_dlg.window(title_re='Xelis .*1개의 실행 중인 창.*')
+
+            if not taskbar_xelis_dlg.exists():
+                print('Xelis is not running')
+                return
+
+            taskbar_xelis_dlg.right_click_input()
+            time.sleep(0.5)
+            pywinauto.keyboard.send_keys('{UP}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+            pywinauto.keyboard.send_keys('{LEFT}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+        except Exception as e:
+            self.report_failure('Xelis', e)
+
+    def close_pointnix_deprecated(self):
+        try:
+            print('Pointnix close up procedure')
+            taskbar_pointnix_dlg = self.taskbar_dlg.window(title_re='^CDX-View .*개의 실행 중인 창')
+            if not taskbar_pointnix_dlg.exists():
+                print('Pointnix is not running')
+                return
+
+            taskbar_pointnix_dlg.right_click_input()
+            time.sleep(0.5)
+            pywinauto.keyboard.send_keys('{UP}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+        except Exception as e:
+            self.report_failure('PointNix', e)
+
+    def close_explorer_deprecated(self):
+        try:
+            print('Explorer close up procedure')
+            taskbar_explorer_dlg = self.taskbar_dlg.window(title_re='파일 탐색기 .* 실행 중인 창')
+            if not taskbar_explorer_dlg.exists():
+                print('No explorer is running')
+                return
+
+            # self.app.connect(class_name='CabinetWClass')
+            taskbar_explorer_dlg.right_click_input()
+            time.sleep(0.5)
+            pywinauto.keyboard.send_keys('{UP}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+        except Exception as e:
+            self.report_failure('Explorer', e)
+
+    def close_chrome_deprecated(self):
+        try:
+            print('Chrome close up procedure')
+            # taskbar_chrome_dlg = self.taskbar_dlg.window(title_re='Chrome .* 실행 중인 창')
+            taskbar_chrome_dlg = self.taskbar_dlg.window(title_re='Google Chrome .* 실행 중인 창')
+            if not taskbar_chrome_dlg.exists():
+                print('No Chrome browser is running')
+                return
+
+            taskbar_chrome_dlg.right_click_input()
+            time.sleep(0.5)
+            pywinauto.keyboard.send_keys('{UP}')
+            pywinauto.keyboard.send_keys('{ENTER}')
+        except Exception as e:
+            self.report_failure('Chrome', e)
 
 if __name__ == '__main__':
     wc = WookClose()
